@@ -30,9 +30,10 @@ public class Item implements Serializable {
 	
 	public Item(){}
 
-	public Item(String name, String amount){
+	public Item(String name, String amount, String unit){
 		this.name = name;
 		this.amount = amount;
+		this.unit = unit;
 	}
 	
 	public long getId() {

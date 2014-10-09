@@ -44,9 +44,10 @@ public class ApiController {
 	@RequestMapping(value = "/api/addItem", method = RequestMethod.POST)
 	public @ResponseBody long addItem(@RequestParam("listId")UUID listId,
 						@RequestParam("item")String item,
-						@RequestParam("amount")String amount) {
-		logger.info("api/addItem " + item + " to list " + listId);
-		Item newItem = new Item(item, amount);
+						@RequestParam("amount")String amount,
+						@RequestParam("unit")String unit) {
+		logger.info("api/addItem ("+item+","+amount+","+unit+") to list <"+listId+">");
+		Item newItem = new Item(item, amount, unit);
 		return listService.addItem(listId, newItem);
 	}
 	
@@ -54,7 +55,7 @@ public class ApiController {
 	@RequestMapping(value = "/api/deleteItem", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteItem(@RequestParam("listId")UUID listId, @RequestParam("id")long id) {
-		logger.info("api/removeItem " + id + " from list " + listId);
+		logger.info("api/removeItem <"+id+"> from list <"+listId+">");
 		listService.removeItem(listId, id);
 	}
 	/*

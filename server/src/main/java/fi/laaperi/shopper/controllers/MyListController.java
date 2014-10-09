@@ -52,18 +52,6 @@ public class MyListController {
 	@RequestMapping(value = "/myList", method = RequestMethod.GET)
 	public String getList(Locale locale, Model model) {
 		logger.info("List");
-		
-		UUID listId = null;
-		List<ItemList> lists = listService.getLists();
-		if(lists == null || lists.size() < 1){
-			listId = listService.createList();
-		}else{
-			listId = lists.get(0).getId();
-		}
-		ItemList list = listService.getList(listId);
-		
-		List<Item> items = list.getItems();
-		model.addAttribute("itemList", items);
 		return "mylist";
 	}
 	
@@ -71,7 +59,7 @@ public class MyListController {
 	@ResponseBody
 	public String addItem(@RequestParam String item, @RequestParam String amount) {
 		logger.info("AddItem <" + item + " - " + amount + ">");
-		Item newItem = new Item(item, amount);
+		Item newItem = new Item(item, amount, "Unit");
 		
 		UUID listId = listService.getLists().get(0).getId();
 		

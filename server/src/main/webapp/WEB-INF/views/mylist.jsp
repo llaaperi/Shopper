@@ -29,7 +29,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Shopper</a>
+          <a class="navbar-brand" href="/shopper">Shopper</a>
           <a class="navbar-brand" href="myList">MyList</a>
         </div>
         <div class="navbar-collapse collapse">
@@ -72,10 +72,12 @@
         
         <tfoot>
         	<tr>
+        	<form>
         	  <td><input class="form-control" type="text" placeholder="Item" value="" ng-model="item.name"></td>
-        	  <td><input class="form-control" type="number" min="0" placeholder="Amount" value="1" ng-model="item.amount"></td>
-        	  <td><input class="form-control" type="text" placeholder="Unit" value="" ng-model="item.unit"></td>
+        	  <td><input class="form-control" type="number" min="1" value="1" ng-model="item.amount"></td>
+        	  <td><select class="form-control" ng-model="item.unit" ng-options="unit for unit in units"></select></td>
         	  <td><button type="submit" class="btn btn-default" ng-click="addItem(item)">Add</button></td>
+        	</form>
         	</tr>
         </tfoot>
         
