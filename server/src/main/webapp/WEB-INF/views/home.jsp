@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
-<html>
+<html ng-app="shopperApp">
   <head>
     <title>Shopper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
     <link href="css/bootstrap_jumbo.css" rel="stylesheet">
     <link href="css/shopper.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="js/angular/app.js"></script>
+	<script type="text/javascript" src="js/angular/listModule.js"></script>
   </head>
   <body>
   
@@ -42,7 +49,9 @@
 	<div class="container">
 	
       <h1>Welcome</h1>
-	  <P></P>
+      <p>Let's shop</p>
+      
+      <h2>My lists</h2>
       
     </div>
     

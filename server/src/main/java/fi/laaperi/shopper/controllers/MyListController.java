@@ -10,12 +10,15 @@ import org.atmosphere.jersey.Broadcastable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -55,31 +58,47 @@ public class MyListController {
 		return "mylist";
 	}
 	
-	@RequestMapping(value = "/addItem", method = RequestMethod.POST)
-	@ResponseBody
-	public String addItem(@RequestParam String item, @RequestParam int amount) {
-		logger.info("AddItem <" + item + " - " + amount + ">");
-		Item newItem = new Item(item, amount, "Unit");
+	@RequestMapping(value = "/api/getList", method = RequestMethod.GET)
+	public @ResponseBody ItemList getList() {
+		logger.info("api/getList ");
 		
-		UUID listId = listService.getLists().get(0).getId();
-		
-		listService.addItem(listId, newItem);
-		
-		notifyChange(listId);
-		return "OK";
+		UUID listId = null;
+		List<ItemList> lists = listService.getLists();
+		if(lists == null || lists.size() < 1){
+			listId = listService.createList();
+		}else{
+			listId = lists.get(0).getId();
+		}
+		ItemList list = listService.getList(listId);
+		return list;
 	}
 	
-	@RequestMapping(value = "/deleteItem", method = RequestMethod.POST)
-	@ResponseBody
-	public String deleteItem(@RequestParam long id) {
-		logger.info("DeleteItem <" + id + ">");
-		
-		UUID listId = listService.getLists().get(0).getId();
-		
-		listService.removeItem(listId, id);
+	@RequestMapping(value = "/api/addItem", method = RequestMethod.POST)
+	public @ResponseBody long addItem(@RequestParam("listId")UUID listId,
+						@RequestBody Item item) {
+		logger.info("api/addItem ("+item.getName()+","+item.getAmount()+","+item.getUnit()+") to list <"+listId+">");
+		Item newItem = new Item(item.getName(), item.getAmount(), item.getUnit());
 		
 		notifyChange(listId);
-		return "OK";
+		
+		return listService.addItem(listId, newItem);
+	}
+	
+	
+	@RequestMapping(value = "/api/deleteItem", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteItem(@RequestParam("listId")UUID listId, @RequestParam("id")long id) {
+		logger.info("api/removeItem <"+id+"> from list <"+listId+">");
+		listService.removeItem(listId, id);
+		notifyChange(listId);
+	}
+	
+	@RequestMapping(value = "/api/updateItem", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateItem(@RequestParam("listId")UUID listId, @RequestBody Item item) {
+		logger.info("api/updateItem <"+item.getId()+"> from list <"+listId+">");
+		listService.updateItem(item);
+		notifyChange(listId);
 	}
 	
 	

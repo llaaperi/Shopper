@@ -54,17 +54,16 @@
         
         <thead>
           <tr>
-            <th class="col-md-7">Item</th>
-            <th class="col-md-2">Amount</th>
-            <th class="col-md-2">Unit</th>
-            <th class="col-md-1"></th>
-            <th class="col-md-1"></th>
+            <th class="col-xs-7 col-sm-7">Item</th>
+            <th class="col-xs-1 col-sm-2">Amount</th>
+            <th class="col-xs-3 col-sm-2">Unit</th>
+            <th class="col-xs-1 col-sm-1"></th>
           </tr>
         </thead>
         
         <tbody>
-			<tr ng-repeat="item in items" ng-click="openEdit(item)">
-		        	<td>
+			<tr ng-repeat="item in items">
+		        	<td ng-dblclick="editItem(item)">
 		        		<div ng-hide="item.editing">
 		        			{{item.name}}
 		        		</div>
@@ -72,7 +71,7 @@
 		        			<input class="form-control" type="text" placeholder="Item" value="" ng-model="item.name">
 		        		</div>
 		        	</td>
-					<td>
+					<td ng-dblclick="editItem(item)">
 						<div ng-hide="item.editing">
 							{{item.amount}}
 						</div>
@@ -80,7 +79,7 @@
 							<input class="form-control" type="number" min="1" value="1" ng-model="item.amount">
 						</div>
 					</td>
-					<td>
+					<td ng-dblclick="editItem(item)">
 						<div ng-hide="item.editing">
 							{{item.unit}}
 						</div>
@@ -88,11 +87,10 @@
 							<select class="form-control" ng-model="item.unit" ng-options="unit for unit in units"></select>
 						</div>
 					</td>
-					<td>
-						<button class='btn btn-default btn-sm' ng-hide="item.editing" ng-click="editItem(item)">Edit</button>
+					<td class="text-center">
+						<span class="glyphicon glyphicon-trash" ng-hide="item.editing" ng-click="deleteItem(item)"></span>
 						<button class='btn btn-default btn-sm' ng-show="item.editing" ng-click="updateItem(item)">Save</button>
 					</td>
-					<td><button class='btn btn-default btn-sm' ng-click="deleteItem(item)">Delete</button></td>
 			</tr>
         </tbody>
         
@@ -102,8 +100,11 @@
         	  <td><input class="form-control" type="text" placeholder="Item" value="" ng-model="newItem.name"></td>
         	  <td><input class="form-control" type="number" min="1" value="1" ng-model="newItem.amount"></td>
         	  <td><select class="form-control" ng-model="newItem.unit" ng-options="unit for unit in units"></select></td>
-        	  <td><button type="submit" class="btn btn-default" ng-click="addItem(newItem)">Add</button></td>
-        	  <td></td>
+        	  <td>
+        	  	<button type="submit" class="btn btn-default" ng-click="addItem(newItem)">
+        	  	  Add
+        	  	</button>
+        	  </td>
         	</form>
         	</tr>
         </tfoot>
