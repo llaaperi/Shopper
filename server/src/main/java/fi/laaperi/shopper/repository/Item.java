@@ -22,7 +22,7 @@ public class Item implements Serializable {
 	@Expose
 	private String name;
 	@Expose
-	private String amount;
+	private int amount;
 	@Expose
 	private String unit;
 	@ManyToOne
@@ -30,7 +30,7 @@ public class Item implements Serializable {
 	
 	public Item(){}
 
-	public Item(String name, String amount, String unit){
+	public Item(String name, int amount, String unit){
 		this.name = name;
 		this.amount = amount;
 		this.unit = unit;
@@ -52,11 +52,11 @@ public class Item implements Serializable {
 		this.name = name;
 	}
 	
-	public String getAmount() {
+	public int getAmount() {
 		return amount;
 	}
 	
-	public void setAmount(String amount) {
+	public void setAmount(int amount) {
 		this.amount = amount;
 	}
 	

@@ -9,16 +9,36 @@ module.factory('ListService', function($http, $modal){
 		},
 		
 		addItem: function(listId, item, callback){
-			$http.post('api/addItem?listId='+listId+'&item='+item.name+'&amount='+item.amount+'&unit='+item.unit).success(callback);
+			//$http.post('api/addItem?listId='+listId+'&item='+item.name+'&amount='+item.amount+'&unit='+item.unit).success(callback);
+			$http.post('api/addItem?listId='+listId, item).success(callback);
 		},
 		
-		//getUser TODO
 		deleteItem: function(listId, item, callback){
 			$http.post('api/deleteItem?listId='+listId+'&id='+item.id).success(callback);
+		},
+		
+		updateItem: function(listId, item, callback){
+			$http.post('api/updateItem?listId='+listId, item).success(callback);
 		}
+		
 	};
 });
 
+module.directive('clickOutside', function($document){
+	return {
+	    restrict: 'A',
+	    link: function(scope, elem, attr, ctrl) {
+	      elem.bind('click', function(e) {
+	        // this part keeps it from firing the click on the document.
+	        e.stopPropagation();
+	      });
+	      $document.bind('click', function() {
+	        // magic here
+	        scope.$apply(attr.clickOutside);
+	      })
+	    }
+	  }
+});
 	
 //CONTOLLER
 module.controller('ListController', ['$scope', 'ListService', function($scope, ListService){
@@ -27,8 +47,8 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 	
 	$scope.list;
 	$scope.items = [];
-	$scope.item = {};
-	initItem();
+	$scope.newItem = {};
+	initNewItem();
 	
 	ListService.getList(function(itemList){
 		console.log("Get list");
@@ -37,13 +57,13 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		$scope.items = itemList.items;
 	});
 	
-	$scope.addItem = function(item){
+	$scope.addItem = function(newItem){
 		console.log("Add item");
-		console.log(item);
-		ListService.addItem($scope.list.id, item, function(itemId){
-			item.id = itemId;
-			$scope.items.push(item);
-			initItem();
+		console.log(newItem);
+		ListService.addItem($scope.list.id, newItem, function(itemId){
+			newItem.id = itemId;
+			$scope.items.push(newItem);
+			initNewItem();
 		});
 	};
 	
@@ -57,12 +77,29 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		});
 	};
 	
+	$scope.editItem = function(item){
+		item.editing = true;
+	};
 	
-	function initItem(){
-		console.log("Init item");
-		$scope.item = {};
-		$scope.item.amount = 1;
-		$scope.item.unit = $scope.units[0];
+	$scope.updateItem = function(item){
+		console.log("Update item");
+		console.log(item);
+		var it = {};
+		it.id = item.id;
+		it.name = item.name;
+		it.amount = item.amount;
+		it.unit = item.unit;
+
+		ListService.updateItem($scope.list.id, it, function(response){
+			item.editing = false;
+		});
+	};
+	
+	function initNewItem(){
+		console.log("Init new item");
+		$scope.newItem = {};
+		$scope.newItem.amount = 1;
+		$scope.newItem.unit = $scope.units[0];
 	};
 	
 	//TODO delete

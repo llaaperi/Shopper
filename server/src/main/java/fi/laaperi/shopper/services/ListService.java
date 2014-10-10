@@ -18,6 +18,8 @@ public interface ListService {
 	
 	public abstract void removeItem(UUID listId, long itemId);
 	
+	public abstract void updateItem(Item item);
+	
 	//public abstract List<Item> getItems();
 
 	//public abstract void addItem(Item item);

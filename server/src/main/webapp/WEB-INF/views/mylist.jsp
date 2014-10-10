@@ -58,14 +58,40 @@
             <th class="col-md-2">Amount</th>
             <th class="col-md-2">Unit</th>
             <th class="col-md-1"></th>
+            <th class="col-md-1"></th>
           </tr>
         </thead>
         
         <tbody>
-			<tr ng-repeat="item in items">
-		        	<td>{{item.name}}</td>
-					<td>{{item.amount}}</td>
-					<td>{{item.unit}}</td>
+			<tr ng-repeat="item in items" ng-click="openEdit(item)">
+		        	<td>
+		        		<div ng-hide="item.editing">
+		        			{{item.name}}
+		        		</div>
+		        		<div ng-show="item.editing">
+		        			<input class="form-control" type="text" placeholder="Item" value="" ng-model="item.name">
+		        		</div>
+		        	</td>
+					<td>
+						<div ng-hide="item.editing">
+							{{item.amount}}
+						</div>
+						<div ng-show="item.editing">
+							<input class="form-control" type="number" min="1" value="1" ng-model="item.amount">
+						</div>
+					</td>
+					<td>
+						<div ng-hide="item.editing">
+							{{item.unit}}
+						</div>
+						<div ng-show="item.editing">
+							<select class="form-control" ng-model="item.unit" ng-options="unit for unit in units"></select>
+						</div>
+					</td>
+					<td>
+						<button class='btn btn-default btn-sm' ng-hide="item.editing" ng-click="editItem(item)">Edit</button>
+						<button class='btn btn-default btn-sm' ng-show="item.editing" ng-click="updateItem(item)">Save</button>
+					</td>
 					<td><button class='btn btn-default btn-sm' ng-click="deleteItem(item)">Delete</button></td>
 			</tr>
         </tbody>
@@ -73,10 +99,11 @@
         <tfoot>
         	<tr>
         	<form>
-        	  <td><input class="form-control" type="text" placeholder="Item" value="" ng-model="item.name"></td>
-        	  <td><input class="form-control" type="number" min="1" value="1" ng-model="item.amount"></td>
-        	  <td><select class="form-control" ng-model="item.unit" ng-options="unit for unit in units"></select></td>
-        	  <td><button type="submit" class="btn btn-default" ng-click="addItem(item)">Add</button></td>
+        	  <td><input class="form-control" type="text" placeholder="Item" value="" ng-model="newItem.name"></td>
+        	  <td><input class="form-control" type="number" min="1" value="1" ng-model="newItem.amount"></td>
+        	  <td><select class="form-control" ng-model="newItem.unit" ng-options="unit for unit in units"></select></td>
+        	  <td><button type="submit" class="btn btn-default" ng-click="addItem(newItem)">Add</button></td>
+        	  <td></td>
         	</form>
         	</tr>
         </tfoot>

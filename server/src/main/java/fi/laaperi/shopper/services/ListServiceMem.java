@@ -40,6 +40,11 @@ public class ListServiceMem implements ListService {
 		return null;
 	}
 	
+	@Override
+	public void updateItem(Item item) {
+		// TODO Auto-generated method stub
+	}
+	
 	/*
 	@Override
 	public List<Item> getItems(){

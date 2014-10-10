@@ -27,6 +27,13 @@ public class ItemDao {
 	}
 	
 	@Transactional
+	public void updateItem(Item item){
+		logger.info("Update item " + item.getName());
+		Session session = sessionFactory.getCurrentSession();
+		session.update(item);
+	}
+	
+	@Transactional
 	public Item findById(Long id) {
 		logger.info("Find item with id " + id);
 		Session session = sessionFactory.getCurrentSession();

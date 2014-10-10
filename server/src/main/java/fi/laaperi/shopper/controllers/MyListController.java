@@ -57,7 +57,7 @@ public class MyListController {
 	
 	@RequestMapping(value = "/addItem", method = RequestMethod.POST)
 	@ResponseBody
-	public String addItem(@RequestParam String item, @RequestParam String amount) {
+	public String addItem(@RequestParam String item, @RequestParam int amount) {
 		logger.info("AddItem <" + item + " - " + amount + ">");
 		Item newItem = new Item(item, amount, "Unit");
 		

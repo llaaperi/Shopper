@@ -18,6 +18,9 @@ public class ListServiceHibernate implements ListService {
 
 	@Autowired
 	ItemListDao listDao;
+	
+	@Autowired
+	ItemDao itemDao;
 
 	@Override
 	public UUID createList() {
@@ -49,6 +52,15 @@ public class ListServiceHibernate implements ListService {
 		ItemList list = listDao.findById(listId);
 		list.removeItem(itemId);
 		listDao.persist(list);
+	}
+	
+	@Override
+	public void updateItem(Item item) {
+		Item oldItem = itemDao.findById(item.getId());
+		oldItem.setName(item.getName());
+		oldItem.setAmount(item.getAmount());
+		oldItem.setUnit(item.getUnit());
+		itemDao.updateItem(oldItem);
 	}
 	
 	/*

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,11 +44,9 @@ public class ApiController {
 	
 	@RequestMapping(value = "/api/addItem", method = RequestMethod.POST)
 	public @ResponseBody long addItem(@RequestParam("listId")UUID listId,
-						@RequestParam("item")String item,
-						@RequestParam("amount")String amount,
-						@RequestParam("unit")String unit) {
-		logger.info("api/addItem ("+item+","+amount+","+unit+") to list <"+listId+">");
-		Item newItem = new Item(item, amount, unit);
+						@RequestBody Item item) {
+		logger.info("api/addItem ("+item.getName()+","+item.getAmount()+","+item.getUnit()+") to list <"+listId+">");
+		Item newItem = new Item(item.getName(), item.getAmount(), item.getUnit());
 		return listService.addItem(listId, newItem);
 	}
 	
@@ -58,6 +57,15 @@ public class ApiController {
 		logger.info("api/removeItem <"+id+"> from list <"+listId+">");
 		listService.removeItem(listId, id);
 	}
+	
+	@RequestMapping(value = "/api/updateItem", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public void updateItem(@RequestParam("listId")UUID listId, @RequestBody Item item) {
+		logger.info("api/updateItem <"+item.getId()+"> from list <"+listId+">");
+		listService.updateItem(item);
+	}
+	
+	
 	/*
 	@RequestMapping(value = "/api/getList", method = RequestMethod.GET)
 	public @ResponseBody List<Item> getList(@RequestParam("listId")UUID listId) {
