@@ -3,6 +3,8 @@ package fi.laaperi.shopper.services;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import fi.laaperi.shopper.repository.ItemListDao;
 @Primary
 public class ListServiceHibernate implements ListService {
 
+	private static final Logger logger = LoggerFactory.getLogger(ListServiceHibernate.class);
+	
 	@Autowired
 	ItemListDao listDao;
 	
@@ -51,6 +55,16 @@ public class ListServiceHibernate implements ListService {
 	public void removeItem(UUID listId, long itemId) {
 		ItemList list = listDao.findById(listId);
 		list.removeItem(itemId);
+		listDao.persist(list);
+	}
+	
+	@Override
+	public void removeItems(UUID listId, List<Item> items) {
+		ItemList list = listDao.findById(listId);
+		for(Item item : items){
+			logger.info("Remove ("+item.getId()+") <"+item.getName()+"> from list "+listId);
+			list.removeItem(item.getId());
+		}
 		listDao.persist(list);
 	}
 	

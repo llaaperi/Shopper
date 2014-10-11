@@ -32,8 +32,12 @@ public class ListServiceMem implements ListService {
 	@Override
 	public void removeItem(UUID listId, long itemId) {
 		// TODO Auto-generated method stub
-		
 	}
+	@Override
+	public void removeItems(UUID listId, List<Item> items) {
+		// TODO Auto-generated method stub
+	}
+	
 	@Override
 	public UUID createList() {
 		// TODO Auto-generated method stub

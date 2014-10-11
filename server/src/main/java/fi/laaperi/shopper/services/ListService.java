@@ -18,7 +18,9 @@ public interface ListService {
 	
 	public abstract void removeItem(UUID listId, long itemId);
 	
-	public abstract void updateItem(Item item);
+	public abstract void removeItems(UUID listId, List<Item> items);
+	
+	public abstract void updateItem(Item items);
 	
 	//public abstract List<Item> getItems();
 

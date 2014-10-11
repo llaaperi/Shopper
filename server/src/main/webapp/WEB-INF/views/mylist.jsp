@@ -49,21 +49,24 @@
     <div class="container" ng-controller="ListController">
 	
       <h1>MyList</h1>
-      
-      <table class="table table-striped table-condensed table-hover">
+	  
+      <table class="table">
         
         <thead>
           <tr>
             <th class="col-xs-7 col-sm-7">Item</th>
             <th class="col-xs-1 col-sm-2">Amount</th>
             <th class="col-xs-3 col-sm-2">Unit</th>
-            <th class="col-xs-1 col-sm-1"></th>
+            <th class="text-center" class="col-xs-1 col-sm-1">
+              <button class='btn btn-default' ng-hide="true" ng-click="">Clear</button>
+              <span class="glyphicon glyphicon-trash" ng-click="deleteMarkedItems()"></span>
+            </th>
           </tr>
         </thead>
         
         <tbody>
 			<tr ng-repeat="item in items">
-		        	<td ng-dblclick="editItem(item)">
+		        	<td ng-class="{markedItem: item.marked && !item.editing}" ng-click="markItem(item)">
 		        		<div ng-hide="item.editing">
 		        			{{item.name}}
 		        		</div>
@@ -71,7 +74,7 @@
 		        			<input class="form-control" type="text" placeholder="Item" value="" ng-model="item.name">
 		        		</div>
 		        	</td>
-					<td ng-dblclick="editItem(item)">
+					<td ng-class="{markedItem: item.marked && !item.editing}" ng-click="markItem(item)">
 						<div ng-hide="item.editing">
 							{{item.amount}}
 						</div>
@@ -79,7 +82,7 @@
 							<input class="form-control" type="number" min="1" value="1" ng-model="item.amount">
 						</div>
 					</td>
-					<td ng-dblclick="editItem(item)">
+					<td ng-class="{markedItem: item.marked && !item.editing}" ng-click="markItem(item)">
 						<div ng-hide="item.editing">
 							{{item.unit}}
 						</div>
@@ -87,8 +90,9 @@
 							<select class="form-control" ng-model="item.unit" ng-options="unit for unit in units"></select>
 						</div>
 					</td>
-					<td class="text-center">
-						<span class="glyphicon glyphicon-trash" ng-hide="item.editing" ng-click="deleteItem(item)"></span>
+					<td class="text-center" ng-class="{markedItem: item.marked && !item.editing}" ng-style="itemStyle">
+						<span class="glyphicon glyphicon-ok" ng-show="item.marked && !item.editing"></span>
+						<span class="glyphicon glyphicon-pencil" ng-hide="item.editing || item.marked" ng-click="editItem(item)"></span>
 						<button class='btn btn-default btn-sm' ng-show="item.editing" ng-click="updateItem(item)">Save</button>
 					</td>
 			</tr>

@@ -9,12 +9,15 @@ module.factory('ListService', function($http, $modal){
 		},
 		
 		addItem: function(listId, item, callback){
-			//$http.post('api/addItem?listId='+listId+'&item='+item.name+'&amount='+item.amount+'&unit='+item.unit).success(callback);
 			$http.post('api/addItem?listId='+listId, item).success(callback);
 		},
 		
 		deleteItem: function(listId, item, callback){
 			$http.post('api/deleteItem?listId='+listId+'&id='+item.id).success(callback);
+		},
+		
+		deleteItems: function(listId, items, callback){
+			$http.post('api/deleteItems?listId='+listId, items).success(callback);
 		},
 		
 		updateItem: function(listId, item, callback){
@@ -77,6 +80,35 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		});
 	};
 	
+	$scope.markItem = function(item){
+		//console.log("Mark item");
+		//console.log(item);
+		if(!item.editing){	//Do not mark if item is being edited
+			item.marked =! item.marked;
+		}
+	};
+	
+	$scope.deleteMarkedItems = function(){
+		console.log("Delete marked items");
+		var remainingItems = [];
+		var deletedItems = [];
+		for(var i = 0; i < $scope.items.length; i++){
+			if($scope.items[i].marked == true){ //Remove marked
+				deletedItems.push(cleanItem($scope.items[i]));
+			}else{
+				remainingItems.push($scope.items[i]);
+			}
+		}
+		console.log(deletedItems);
+		if(deletedItems.length == 0){
+			return;	//Do not make server query for empty list
+		}
+		ListService.deleteItems($scope.list.id, deletedItems, function(respone){
+			console.log("deleted "+deletedItems.length+" items from the server");
+			$scope.items = remainingItems;
+		});
+	};
+	
 	$scope.editItem = function(item){
 		item.editing = true;
 	};
@@ -84,25 +116,23 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 	$scope.updateItem = function(item){
 		console.log("Update item");
 		console.log(item);
-		var it = {};
-		it.id = item.id;
-		it.name = item.name;
-		it.amount = item.amount;
-		it.unit = item.unit;
-
-		ListService.updateItem($scope.list.id, it, function(response){
+		ListService.updateItem($scope.list.id, cleanItem(item), function(response){
 			item.editing = false;
 		});
 	};
 	
 	function initNewItem(){
-		console.log("Init new item");
 		$scope.newItem = {};
 		$scope.newItem.amount = 1;
 		$scope.newItem.unit = $scope.units[0];
 	};
 	
-	//TODO delete
-	
-	
+	function cleanItem(item){
+		var item2 = {};
+		item2.id = item.id;
+		item2.name = item.name;
+		item2.amount = item.amount;
+		item2.unit = item.unit;
+		return item2;
+	};
 }]);
