@@ -186,6 +186,7 @@
 		</dependency>        
 	</dependencies>
     <build>
+    	<finalName>shopper</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>

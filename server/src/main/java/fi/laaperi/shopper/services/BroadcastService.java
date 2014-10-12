@@ -3,14 +3,15 @@ package fi.laaperi.shopper.services;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.atmosphere.cpr.Broadcaster;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BroadcastService {
 	
-	private final static Logger logger = Logger.getLogger(BroadcastService.class);
+	private final static Logger logger = LoggerFactory.getLogger(BroadcastService.class);
 	
 	private Map<String, Broadcaster> broadcastTokens = new ConcurrentHashMap<String, Broadcaster>();
 	

@@ -2,17 +2,19 @@ package fi.laaperi.shopper.repository;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Repository
 public class ItemDao {
-
-	private static final Logger logger = Logger.getLogger(ItemDao.class);
+	
+	private static final Logger logger = LoggerFactory.getLogger(ItemDao.class);
 	
 	@Autowired
 	SessionFactory sessionFactory;
