@@ -45,6 +45,9 @@ public class ListServiceHibernate implements ListService {
 
 	@Override
 	public long addItem(UUID listId, Item item) {
+		//TODO Fix list index bug. 
+		//If database access is slow (which it shouldn't be normally as the database should run at localhost)
+		//subsequent additions query list that have not yet received additions which leads to duplicate item indexes.
 		ItemList list = listDao.findById(listId);
 		list.addItem(item);
 		listDao.persist(list);

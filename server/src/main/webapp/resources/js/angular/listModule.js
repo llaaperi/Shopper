@@ -63,10 +63,13 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 	$scope.addItem = function(newItem){
 		console.log("Add item");
 		console.log(newItem);
-		ListService.addItem($scope.list.id, newItem, function(itemId){
+		newItem.syncing = true;
+		$scope.items.push(newItem);
+		initNewItem();
+		ListService.addItem($scope.list.id, cleanItem(newItem), function(itemId){
+			console.log("Added item <"+itemId+"> at the server");
 			newItem.id = itemId;
-			$scope.items.push(newItem);
-			initNewItem();
+			newItem.syncing = false;
 		});
 	};
 	
@@ -103,9 +106,9 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		if(deletedItems.length == 0){
 			return;	//Do not make server query for empty list
 		}
+		$scope.items = remainingItems;
 		ListService.deleteItems($scope.list.id, deletedItems, function(respone){
-			console.log("deleted "+deletedItems.length+" items from the server");
-			$scope.items = remainingItems;
+			console.log("Deleted "+deletedItems.length+" items at the server");
 		});
 	};
 	
@@ -116,8 +119,11 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 	$scope.updateItem = function(item){
 		console.log("Update item");
 		console.log(item);
+		item.editing = false;
+		item.syncing = true;
 		ListService.updateItem($scope.list.id, cleanItem(item), function(response){
-			item.editing = false;
+			console.log("Updated item at the server");
+			item.syncing = false;
 		});
 	};
 	

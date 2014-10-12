@@ -67,7 +67,7 @@
         <tbody>
 			<tr ng-repeat="item in items">
 		        	<td ng-class="{markedItem: item.marked && !item.editing}" ng-click="markItem(item)">
-		        		<div ng-hide="item.editing">
+		        		<div ng-class="{syncingItem: item.syncing}" ng-hide="item.editing">
 		        			{{item.name}}
 		        		</div>
 		        		<div ng-show="item.editing">
@@ -75,7 +75,7 @@
 		        		</div>
 		        	</td>
 					<td ng-class="{markedItem: item.marked && !item.editing}" ng-click="markItem(item)">
-						<div ng-hide="item.editing">
+						<div ng-class="{syncingItem: item.syncing}" ng-hide="item.editing">
 							{{item.amount}}
 						</div>
 						<div ng-show="item.editing">
@@ -83,7 +83,7 @@
 						</div>
 					</td>
 					<td ng-class="{markedItem: item.marked && !item.editing}" ng-click="markItem(item)">
-						<div ng-hide="item.editing">
+						<div ng-class="{syncingItem: item.syncing}" ng-hide="item.editing">
 							{{item.unit}}
 						</div>
 						<div ng-show="item.editing">
@@ -92,7 +92,8 @@
 					</td>
 					<td class="text-center" ng-class="{markedItem: item.marked && !item.editing}" ng-style="itemStyle">
 						<span class="glyphicon glyphicon-ok" ng-show="item.marked && !item.editing"></span>
-						<span class="glyphicon glyphicon-pencil" ng-hide="item.editing || item.marked" ng-click="editItem(item)"></span>
+						<span class="glyphicon glyphicon-refresh" ng-show="item.syncing"></span>
+						<span class="glyphicon glyphicon-pencil" ng-hide="item.editing || item.marked || item.syncing" ng-click="editItem(item)"></span>
 						<button class='btn btn-default btn-sm' ng-show="item.editing" ng-click="updateItem(item)">Save</button>
 					</td>
 			</tr>
