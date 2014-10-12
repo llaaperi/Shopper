@@ -5,5 +5,7 @@ body {
 }
 
 .markedItem{
-  background-color: #81F781;
+  /*background-color: rgba(0,200,0,0.4);*/
+  background-color: #A0EBA0;
+  
 }
