@@ -122,6 +122,9 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		//console.log(item);
 		if(!item.editing){	//Do not mark if item is being edited
 			item.marked =! item.marked;
+			ListService.updateItem($scope.list.id, cleanItem(item), function(response){
+				console.log("Marked item at the server");
+			});
 		}
 	};
 	
@@ -173,6 +176,7 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		item2.name = item.name;
 		item2.amount = item.amount;
 		item2.unit = item.unit;
+		item2.marked = item.marked;
 		return item2;
 	};
 }]);

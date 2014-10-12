@@ -25,6 +25,9 @@ public class Item implements Serializable {
 	private int amount;
 	@Expose
 	private String unit;
+	@Expose
+	private boolean marked = false;
+	
 	@ManyToOne
 	private ItemList list;
 	
@@ -66,6 +69,14 @@ public class Item implements Serializable {
 	
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+	
+	public boolean isMarked() {
+		return marked;
+	}
+
+	public void setMarked(boolean marked) {
+		this.marked = marked;
 	}
 
 	@Override

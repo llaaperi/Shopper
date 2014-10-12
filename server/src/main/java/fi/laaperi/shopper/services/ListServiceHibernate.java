@@ -77,6 +77,7 @@ public class ListServiceHibernate implements ListService {
 		oldItem.setName(item.getName());
 		oldItem.setAmount(item.getAmount());
 		oldItem.setUnit(item.getUnit());
+		oldItem.setMarked(item.isMarked());
 		itemDao.updateItem(oldItem);
 	}
 	
