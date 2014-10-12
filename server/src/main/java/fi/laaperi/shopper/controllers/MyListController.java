@@ -78,10 +78,9 @@ public class MyListController {
 						@RequestBody Item item) {
 		logger.info("api/addItem ("+item.getName()+","+item.getAmount()+","+item.getUnit()+") to list <"+listId+">");
 		Item newItem = new Item(item.getName(), item.getAmount(), item.getUnit());
-		
-		//notifyChange(listId);
-		
-		return listService.addItem(listId, newItem);
+		long itemId = listService.addItem(listId, newItem);
+		notifyChange(listId);
+		return itemId;
 	}
 	
 	
@@ -90,7 +89,7 @@ public class MyListController {
 	public void deleteItem(@RequestParam("listId")UUID listId, @RequestParam("id")long id) {
 		logger.info("api/removeItem <"+id+"> from list <"+listId+">");
 		listService.removeItem(listId, id);
-		//notifyChange(listId);
+		notifyChange(listId);
 	}
 	
 	@RequestMapping(value = "/api/deleteItems", method = RequestMethod.POST)
@@ -98,7 +97,7 @@ public class MyListController {
 	public void deleteItems(@RequestParam("listId")UUID listId, @RequestBody List<Item> items) {
 		logger.info("api/removeItems <"+items.size()+"> from list <"+listId+">");
 		listService.removeItems(listId, items);
-		//notifyChange(listId);
+		notifyChange(listId);
 	}
 	
 	@RequestMapping(value = "/api/updateItem", method = RequestMethod.POST)
@@ -106,7 +105,7 @@ public class MyListController {
 	public void updateItem(@RequestParam("listId")UUID listId, @RequestBody Item item) {
 		logger.info("api/updateItem <"+item.getId()+"> from list <"+listId+">");
 		listService.updateItem(item);
-		//notifyChange(listId);
+		notifyChange(listId);
 	}
 	
 	

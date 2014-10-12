@@ -1,6 +1,32 @@
 'use strict';
 var module = angular.module('listModule');
 
+function sync(callback){
+	console.log('Start sync');
+	var socket = $.atmosphere;
+	var request = { url: 'sync',
+			contentType : "application/json",
+			logLevel : 'debug',
+			transport : 'websocket' ,
+			fallbackTransport: 'long-polling'};
+	
+	request.onOpen = function(response) {
+		$.atmosphere.log('info', ["Connected: " + response.transport]);
+	};	
+
+	request.onMessage = function (response) {
+		var data = "<empty>";
+		try {
+			data = $.parseJSON(response.responseBody);
+		} catch (err) {
+			$.atmosphere.log('error', ["JSON parse error: " + err]);
+		}
+		callback(data);
+	};
+
+	var subSocket = socket.subscribe(request);
+}
+
 module.factory('ListService', function($http, $modal){
 	return{
 		
@@ -52,6 +78,14 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 	$scope.items = [];
 	$scope.newItem = {};
 	initNewItem();
+	
+	sync(function(items){
+		console.log("Sync items");
+		console.log(items);
+		$scope.$apply(function(){
+			$scope.items = items;
+		});
+	});
 	
 	ListService.getList(function(itemList){
 		console.log("Get list");
