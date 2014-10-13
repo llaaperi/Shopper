@@ -1,6 +1,7 @@
 package fi.laaperi.shopper.services;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -13,30 +14,30 @@ public class BroadcastService {
 	
 	private final static Logger logger = LoggerFactory.getLogger(BroadcastService.class);
 	
-	private Map<String, Broadcaster> broadcastTokens = new ConcurrentHashMap<String, Broadcaster>();
-	
+	private Map<UUID, Broadcaster> broadcastTokens = new ConcurrentHashMap<UUID, Broadcaster>();
 	
 	public BroadcastService(){
-	    logger.info("BS created");
+		logger.info("Broadcast service created");
 	}
 	
-	public void broadcast(String message) {
-		logger.info("Broadcasting message:"+message+" to " + broadcastTokens.size() +" recepients" ); 
-		for (Broadcaster token : broadcastTokens.values()) {
-				token.broadcast(message);
-		}
+	public void broadcast(UUID listId, String message) {
+		Broadcaster broadcaster = broadcastTokens.get(listId);
+		int recipients = broadcaster.getAtmosphereResources().size();
+		logger.info("Broadcasting list "+listId+" to "+recipients+" recepients" ); 
+		broadcaster.broadcast(message);
 	}
  
-	public void addBroadcastToken(Broadcaster token) {
-		logger.info("Added token " + token.getID() + " - n=" + broadcastTokens.size());
-		broadcastTokens.put("channel", token);
+	public void addBroadcastToken(UUID listId, Broadcaster token) {
+		logger.info("Added broadcaster to list " +listId);
+		broadcastTokens.put(listId, token);
 	}
  
-	public void destroyBroadcastToken(String channel) {
-		Broadcaster token = broadcastTokens.get(channel);
-		if (token != null) {
-			token.destroy();
-			broadcastTokens.remove(channel);
+	public void destroyBroadcastToken(UUID listId) {
+		logger.info("Destroyed broadcaster from list " +listId);
+		Broadcaster broadcaster = broadcastTokens.get(listId);
+		if (broadcaster != null) {
+			broadcaster.destroy();
+			broadcastTokens.remove(listId);
 		}
 	}
 	

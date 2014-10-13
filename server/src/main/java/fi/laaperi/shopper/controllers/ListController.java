@@ -1,7 +1,6 @@
 package fi.laaperi.shopper.controllers;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import org.atmosphere.cpr.AtmosphereResource;
@@ -45,11 +44,11 @@ public class ListController {
 	
 	@RequestMapping(value="/sync", method=RequestMethod.GET)
 	@ResponseBody
-	public Broadcastable sync(AtmosphereResource r){
-		logger.info("Sync list " );
+	public Broadcastable sync(@RequestParam("listId")UUID listId, AtmosphereResource r){
+		logger.info("Sync list");
 		r.suspend();
 		final Broadcaster bc = r.getBroadcaster();
-        broadcastService.addBroadcastToken(bc);
+        broadcastService.addBroadcastToken(listId, bc);
         return new Broadcastable(bc);
 	}
 	
@@ -110,7 +109,7 @@ public class ListController {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		List<Item> items = listService.getList(listId).getItems();
 		if(items != null){
-			broadcastService.broadcast(gson.toJson(items));
+			broadcastService.broadcast(listId, gson.toJson(items));
 		}
 	}
 	

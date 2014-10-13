@@ -94,9 +94,9 @@
 						</div>
 					</td>
 					<td class="text-center" ng-class="{markedItem: item.marked && !item.editing}" ng-style="itemStyle">
-						<span class="glyphicon glyphicon-ok" ng-show="item.marked && !item.editing"></span>
-						<span class="glyphicon glyphicon-refresh" ng-show="item.syncing"></span>
+						<span class="glyphicon glyphicon-ok" ng-show="item.marked && !item.editing && !item.syncing"></span>
 						<span class="glyphicon glyphicon-pencil" ng-hide="item.editing || item.marked || item.syncing" ng-click="editItem(item)"></span>
+						<span class="glyphicon glyphicon-refresh" ng-show="item.syncing"></span>
 						<button class='btn btn-default btn-sm' ng-show="item.editing" ng-click="updateItem(item)">Save</button>
 					</td>
 			</tr>

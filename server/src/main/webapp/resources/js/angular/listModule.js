@@ -1,10 +1,11 @@
 'use strict';
 var module = angular.module('listModule');
 
-function sync(callback){
-	console.log('Start sync');
+var subSocket = {};
+function sync(listId, callback){
+	console.log('Start sync for list '+listId);
 	var socket = $.atmosphere;
-	var request = { url: 'sync',
+	var request = { url: 'sync?listId='+listId,
 			contentType : "application/json",
 			logLevel : 'debug',
 			transport : 'websocket' ,
@@ -24,7 +25,7 @@ function sync(callback){
 		callback(data);
 	};
 
-	var subSocket = socket.subscribe(request);
+	subSocket = socket.subscribe(request);
 }
 
 module.factory('ListService', function($http, $modal){
@@ -79,15 +80,6 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 	$scope.newItem = {};
 	initNewItem();
 	
-	//Callback function for sync
-	sync(function(items){
-		console.log("Sync items");
-		console.log(items);
-		$scope.$apply(function(){
-			$scope.items = items;
-		});
-	});
-	
 	$scope.init = function(listId){
 		console.log("Init list controller with id "+listId);
 		ListService.getList(listId, function(itemList){
@@ -96,6 +88,14 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 			$scope.list = itemList;
 			$scope.items = itemList.items;
 		});
+		//Callback function for sync
+		sync(listId, function(items){
+			console.log("Sync items");
+			console.log(items);
+			$scope.$apply(function(){
+				$scope.items = items;
+			});
+		});
 	};
 	
 	$scope.refreshList = function(){
@@ -103,6 +103,7 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		for(var i = 0; i < $scope.items.length; i++){
 			$scope.items[i].syncing = true;
 		}
+		subSocket.close();
 		$scope.init($scope.list.id);
 	};
 	
