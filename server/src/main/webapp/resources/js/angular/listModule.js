@@ -98,6 +98,14 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		});
 	};
 	
+	$scope.refreshList = function(){
+		console.log("Refresh list");
+		for(var i = 0; i < $scope.items.length; i++){
+			$scope.items[i].syncing = true;
+		}
+		$scope.init($scope.list.id);
+	};
+	
 	$scope.addItem = function(newItem){
 		console.log("Add item");
 		console.log(newItem);

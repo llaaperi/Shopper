@@ -50,8 +50,8 @@
     </div>
     
     <div class="container" ng-controller="ListController" ng-init="init('${listId}')">
-    
-      <h1>{{list.name}}</h1>
+      
+      <h1 ng-click="refreshList()">{{list.name}} <span class="glyphicon glyphicon-refresh refreshButton"></span></h1>
 	  
       <table class="table">
         
