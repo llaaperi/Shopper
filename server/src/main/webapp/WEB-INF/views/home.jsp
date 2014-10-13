@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html ng-app="shopperApp">
@@ -28,8 +28,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Shopper</a>
-          <a class="navbar-brand" href="myList">MyList</a>
+          <a class="navbar-brand" href="<c:url value='/'/>">Shopper</a>
         </div>
         <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
@@ -52,6 +51,10 @@
       <p>Let's shop</p>
       
       <h2>My lists</h2>
+      
+      <c:forEach items="${lists}" var="list">
+      	<a href="<c:url value='/${list.id}'/>">${list.name}</a>
+      </c:forEach>
       
     </div>
     

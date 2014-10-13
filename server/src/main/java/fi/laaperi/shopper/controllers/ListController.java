@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,9 +33,9 @@ import fi.laaperi.shopper.services.ListService;
  * Handles requests for the application home page.
  */
 @Controller
-public class MyListController {
+public class ListController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MyListController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ListController.class);
 	
 	@Autowired
 	BroadcastService broadcastService;
@@ -52,25 +53,17 @@ public class MyListController {
         return new Broadcastable(bc);
 	}
 	
-	@RequestMapping(value = "/myList", method = RequestMethod.GET)
-	public String getList(Locale locale, Model model) {
-		logger.info("List");
-		return "mylist";
+	@RequestMapping(value = "/{listId}", method = RequestMethod.GET)
+	public String list(Model model, @PathVariable("listId")UUID listId) {
+		logger.info("getList "+listId);
+		model.addAttribute("listId", listId);
+		return "list";
 	}
 	
 	@RequestMapping(value = "/api/getList", method = RequestMethod.GET)
-	public @ResponseBody ItemList getList() {
-		logger.info("api/getList ");
-		
-		UUID listId = null;
-		List<ItemList> lists = listService.getLists();
-		if(lists == null || lists.size() < 1){
-			listId = listService.createList();
-		}else{
-			listId = lists.get(0).getId();
-		}
-		ItemList list = listService.getList(listId);
-		return list;
+	public @ResponseBody ItemList getList(@RequestParam("listId")UUID listId) {
+		logger.info("api/getList "+listId);
+		return listService.getList(listId);
 	}
 	
 	@RequestMapping(value = "/api/addItem", method = RequestMethod.POST)

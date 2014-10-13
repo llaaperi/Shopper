@@ -19,7 +19,7 @@ public class ItemListDao {
 	@Autowired
 	SessionFactory sessionFactory;
 	
-public ItemListDao(){}
+	public ItemListDao(){}
 	
 	@Transactional
 	public void persist(ItemList list) {

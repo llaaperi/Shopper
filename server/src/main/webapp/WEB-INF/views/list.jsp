@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html ng-app="shopperApp">
 	<head>
@@ -6,8 +8,8 @@
 		
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.0/css/bootstrap.min.css">
-		<link href="css/bootstrap_jumbo.css" rel="stylesheet">
-		<link href="css/shopper.css" rel="stylesheet">
+		<link href="<c:url value='/css/bootstrap_jumbo.css'/>" rel="stylesheet">
+		<link href="<c:url value='/css/shopper.css'/>" rel="stylesheet">
 		
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/atmosphere/2.1.2/atmosphere.min.js"></script>
@@ -15,8 +17,8 @@
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
-		<script type="text/javascript" src="js/angular/app.js"></script>
-		<script type="text/javascript" src="js/angular/listModule.js"></script>
+		<script type="text/javascript" src="<c:url value='/js/angular/app.js'/>"></script>
+		<script type="text/javascript" src="<c:url value='/js/angular/listModule.js'/>"></script>
 		
 	</head>
   
@@ -31,8 +33,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/shopper">Shopper</a>
-          <a class="navbar-brand" href="myList">MyList</a>
+          <a class="navbar-brand" href="<c:url value='/'/>">Shopper</a>
         </div>
         <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
@@ -48,9 +49,9 @@
       </div>
     </div>
     
-    <div class="container" ng-controller="ListController">
-	
-      <h1>MyList</h1>
+    <div class="container" ng-controller="ListController" ng-init="init('${listId}')">
+    
+      <h1>{{list.name}}</h1>
 	  
       <table class="table">
         

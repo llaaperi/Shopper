@@ -30,8 +30,8 @@ function sync(callback){
 module.factory('ListService', function($http, $modal){
 	return{
 		
-		getList: function(callback){
-			$http.get('api/getList').success(callback);
+		getList: function(listId, callback){
+			$http.get('api/getList?listId='+listId).success(callback);
 		},
 		
 		addItem: function(listId, item, callback){
@@ -79,6 +79,7 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 	$scope.newItem = {};
 	initNewItem();
 	
+	//Callback function for sync
 	sync(function(items){
 		console.log("Sync items");
 		console.log(items);
@@ -87,12 +88,15 @@ module.controller('ListController', ['$scope', 'ListService', function($scope, L
 		});
 	});
 	
-	ListService.getList(function(itemList){
-		console.log("Get list");
-		console.log(itemList);
-		$scope.list = itemList;
-		$scope.items = itemList.items;
-	});
+	$scope.init = function(listId){
+		console.log("Init list controller with id "+listId);
+		ListService.getList(listId, function(itemList){
+			console.log("Get list");
+			console.log(itemList);
+			$scope.list = itemList;
+			$scope.items = itemList.items;
+		});
+	};
 	
 	$scope.addItem = function(newItem){
 		console.log("Add item");

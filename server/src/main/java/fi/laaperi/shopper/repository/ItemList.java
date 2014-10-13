@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Type;
 
@@ -27,6 +29,7 @@ public class ItemList implements Serializable {
 	private String name;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
+	@Fetch(FetchMode.SELECT)
 	@IndexColumn(name="idx")
 	@JoinColumn(name="list_id")
 	private List<Item> items;
